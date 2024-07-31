@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, HttpCode } from "@nestjs/common";
+import { Controller, Get, Post, Body, HttpCode, Inject } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { Connection } from "./connection/connection";
 import { MailService } from "./mail/mail.service";
 import { IUser } from "./interface/user.interface";
 import { UserDto } from "./dto/user.dto";
+import { UserRepository } from "./user-repository/user-repository";
 
 @Controller("users")
 export class UserController {
@@ -11,6 +12,8 @@ export class UserController {
     private userService: UserService,
     private connection: Connection,
     private mailService: MailService,
+    private userRepository: UserRepository,
+    @Inject("EmailService") private emailService: MailService,
   ) {}
 
   @Get()
@@ -28,6 +31,8 @@ export class UserController {
   @Get("dbname")
   getDb(): string {
     this.mailService.send();
+    this.emailService.send();
+    this.userRepository.save();
     return this.connection.getName();
   }
 }
