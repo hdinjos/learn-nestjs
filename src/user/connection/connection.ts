@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 
 export class Connection {
   getName(): string {
@@ -17,5 +18,14 @@ export class MySQLConnection extends Connection {
 export class MongoDBConnection extends Connection {
   getName(): string {
     return "MongoDB";
+  }
+}
+
+//factory method/provider factory
+export function createConnection(configService: ConfigService): Connection {
+  if (configService.get("DB") === "mysql") {
+    return new MySQLConnection();
+  } else {
+    return new MongoDBConnection();
   }
 }
