@@ -1,15 +1,15 @@
-import { Connection } from "../connection/connection";
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "src/prisma/prisma.service";
+import { UserDto } from "../dto/user.dto";
+import { User } from "@prisma/client";
 
+@Injectable()
 export class UserRepository {
-  connection: Connection;
+  constructor(private prismaService: PrismaService) {}
 
-  save() {
-    console.log(`save user with connection ${this.connection.getName()}`);
+  async save(req: UserDto): Promise<User> {
+    return this.prismaService.user.create({
+      data: req,
+    });
   }
-}
-
-export function createUserRepository(connection: Connection): UserRepository {
-  const userRepository = new UserRepository();
-  userRepository.connection = connection;
-  return userRepository;
 }

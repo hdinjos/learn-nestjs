@@ -1,5 +1,4 @@
 export class UserDto {
+  email: string;
   name: string;
-  age: number;
-  is_tall: boolean;
 }

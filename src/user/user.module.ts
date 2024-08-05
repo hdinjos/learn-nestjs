@@ -8,15 +8,17 @@ import {
   createConnection,
 } from "./connection/connection";
 import { MailService, sendMail } from "./mail/mail.service";
-import {
-  createUserRepository,
-  UserRepository,
-} from "./user-repository/user-repository";
+import { UserRepository } from "./user-repository/user-repository";
 import { ConfigService } from "@nestjs/config";
+// import { PrismaService } from "src/prisma/prisma.service";
+import { PrismaModule } from "src/prisma/prisma.module";
 
 @Module({
+  imports: [PrismaModule],
   providers: [
     UserService,
+    // PrismaService,
+    UserRepository,
     {
       provide: Connection,
       useFactory: createConnection,
@@ -26,11 +28,6 @@ import { ConfigService } from "@nestjs/config";
     {
       provide: MailService,
       useValue: sendMail,
-    },
-    {
-      provide: UserRepository,
-      useFactory: createUserRepository,
-      inject: [Connection],
     },
     { provide: "EmailService", useExisting: MailService },
   ],

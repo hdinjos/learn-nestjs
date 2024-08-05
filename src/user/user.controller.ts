@@ -24,7 +24,8 @@ export class UserController {
   @Post()
   @HttpCode(201)
   addUser(@Body() userDto: UserDto): string {
-    this.userService.create(userDto);
+    this.userRepository.save(userDto);
+    // this.userService.create(userDto);
     return "created success";
   }
 
@@ -32,7 +33,6 @@ export class UserController {
   getDb(): string {
     this.mailService.send();
     this.emailService.send();
-    this.userRepository.save();
     return this.connection.getName();
   }
 }
