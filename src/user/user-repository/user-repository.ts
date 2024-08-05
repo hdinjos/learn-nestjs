@@ -8,7 +8,7 @@ export class UserRepository {
   constructor(private prismaService: PrismaService) {}
 
   async save(req: UserDto): Promise<User> {
-    return this.prismaService.user.create({
+    return await this.prismaService.user.create({
       data: req,
     });
   }
